@@ -1,3 +1,7 @@
+// 单链表倒序问题
+
+
+
 #include <iostream>
 using namespace std;
 

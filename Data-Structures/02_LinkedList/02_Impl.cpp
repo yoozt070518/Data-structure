@@ -1,3 +1,7 @@
+// 代码实现
+
+
+
 // 单链表：每一个节点只能找到下一个节点 无法回退到上一个节点
 #include <iostream>
 #include <stdlib.h>

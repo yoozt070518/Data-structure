@@ -1,3 +1,7 @@
+// 元素逆序
+
+
+
 #include <iostream>
 #include <cstring>
 using namespace std;

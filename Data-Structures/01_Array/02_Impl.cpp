@@ -1,3 +1,7 @@
+// 动态数组代码实现
+
+
+
 #include <iostream>
 #include <cstring>
 #include <stdexcept>

@@ -1,3 +1,7 @@
+//奇偶数调整
+
+
+
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
