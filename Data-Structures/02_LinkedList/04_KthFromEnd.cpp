@@ -141,6 +141,7 @@ bool GetlastkNode(Clink& link, int k, int& val){
 
 
 int main(){
+    system("chcp 65001");
     srand(time(0));
     Clink link;
     for(int i = 0;i<10;i++){
