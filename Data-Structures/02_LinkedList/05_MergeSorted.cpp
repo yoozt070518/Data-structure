@@ -20,7 +20,7 @@ struct Node
 };
 
 class Clist{
-    friend void MergeSortedList(Clist& link1,Clist& link2);
+    friend void MergeLink(Clist& link1,Clist& link2);
     friend bool GetlastkNode(Clist& link,int k,int& kval);
     friend void ReverseList(Clist& link);
 private:
@@ -36,6 +36,14 @@ public:
             delete p;
             p = head;
         }
+    }
+    void Show(){
+        Node* p = head->next;
+        while(p!=nullptr){
+            cout << p->data << " ";
+            p = p->next;
+        }
+        cout << endl;
     }
     // 头插
     void InsertHead(int val){
@@ -130,31 +138,46 @@ bool GetlastkNode(Clist& link,int k,int& kval){
     return true;
 }
 
-void MergeSortedList(Clist& link1,Clist& link2){
+void MergeLink(Clist& link1,Clist& link2){
     Node* p = link1.head->next;
     Node* q = link2.head->next;
     Node* last = link1.head;
-    while(q != nullptr){
-        if(p == nullptr ||q->data <= p->data){
-            last->next = q;
-            q = q->next;
-            last = last->next;
-            if(q == nullptr){
-                last->next = p;
-                break;
-            }
-        }else {
+    while(p != nullptr && q != nullptr){
+        if(p->data < q->data){
             last->next = p;
             p = p->next;
             last = last->next;
+        }else{
+            last->next = q;
+            q = q->next;
+            last = last->next;
         }
+    }
+    if(p != nullptr){
+        last->next = p;
+    }else{
+        last->next = q; 
     }
     link2.head->next = nullptr;
 }
 
 
 
-
 int main(){
+    int arr[] = {1,3,5,11,15};
+    int brr[] = {2,3,7,18};
+    Clist link1;
+    Clist link2;
+    for(int v : arr){
+        link1.Inserttail(v);
+    }
+    for(int v : brr){
+        link2.Inserttail(v);
+    }
+    link1.Show();
+    link2.Show();
+    MergeLink(link1,link2);
+    link1.Show();
+    link2.Show();
     return 0;
 }
