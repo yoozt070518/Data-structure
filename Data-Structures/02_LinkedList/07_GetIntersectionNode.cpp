@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-// 链表基本结构已经大概熟悉了 直接复制过来的
+
 struct Node
 {
     int data;
@@ -13,6 +13,7 @@ struct Node
 };
 
 class Clist{
+    friend bool IsLinkHasMerge(Node* head1,Node* head2,int& val);
     friend bool HascycGetentry(Clist& link, Node*& entry);
     friend void MergeLink(Clist& link1,Clist& link2);
     friend bool GetlastkNode(Clist& link,int k,int& kval);
@@ -98,8 +99,6 @@ public:
     }
 };
 
-// 重写三个函数接口
-
 // 合并有序链表
 void MergeLink(Clist& link1,Clist& link2){
     Node* p = link1.head->next;
@@ -177,4 +176,47 @@ bool HascycGetentry(Clist& link, Node*& entry){
         }
     }
     return false;
+}
+
+// 判断两个单链表是否相交 如果相交，返回相交节点的值
+bool IsLinkHasMerge(Node* head1,Node* head2,int& val){
+    int cnt1 = 0,cnt2 = 0;
+    Node* p = head1;
+    Node* q = head2;
+    while(p!=nullptr){
+        p=p->next;
+        cnt1++;
+    }
+    while(q!=nullptr){
+        q=q->next;
+        cnt2++;
+    }
+    p = head1;
+    q = head2;
+    if(cnt1 >= cnt2){
+        for(int i = 0;i<(cnt1-cnt2);++i){
+            p = p->next;
+        }
+    }else{
+        for(int i = 0;i<(cnt2-cnt1);++i){
+            q = q->next;
+        }
+    }
+    while(p!=nullptr&&q!=nullptr){
+        if(p==q){
+        val = p->data;
+        return true;
+    }
+        p=p->next;
+        q=q->next;
+        
+    }
+    
+    return false;
+}
+
+
+int main(){
+    
+    return 0;
 }
