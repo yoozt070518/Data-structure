@@ -17,6 +17,7 @@ struct Node
 
 
 class Clist{
+    friend void Reverse(Clist& link);
     friend void ReverseLink(Clist& link); 
 public:
     Clist(){
@@ -36,7 +37,7 @@ private:
     Node* head;
 };
 
-// 单链表逆序
+// 单链表逆序 利用头插法
 void ReverseLink(Clist& link){
     Node* p = link.head->next;
     if(p == nullptr){
@@ -49,4 +50,17 @@ void ReverseLink(Clist& link){
         link.head->next = p;
         p = q;
     }
+}
+
+// 法2 直接反转
+void Reverse(Clist& link){
+    Node* prev = nullptr;
+    Node* curr = link.head->next;
+    while(curr!=nullptr){
+        Node* nexttemp = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = nexttemp;
+    }
+    link.head->next = prev;
 }
