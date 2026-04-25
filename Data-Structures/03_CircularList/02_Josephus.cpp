@@ -19,6 +19,7 @@ struct Node{
 };
 
 void Joseph(Node* head, int k ,int m){
+    if (head == nullptr) return;
     Node* p = head;
     Node* q = head;
     while(q->next!=head){
