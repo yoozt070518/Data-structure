@@ -51,7 +51,7 @@ public:
         p->next = node;
     }
     // 打印
-    void Show(){
+    void Show() const{
         Node* p = head->next;
         while(p!=nullptr){
             cout << p->data << " ";
@@ -77,7 +77,7 @@ public:
     }
 
     // 节点搜索
-    bool Find(int val){
+    bool Find(int val) const{
         Node* p = head->next;
         while(p!=nullptr){
             if(p->data == val){
