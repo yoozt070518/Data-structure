@@ -1,0 +1,47 @@
+{
+  "highlight.regexes": {
+    "(\\*\\*)(.*?)(\\*\\*)": {
+      "filterLanguageRegex": "markdown",
+      "decorations": [
+        { "color": "#FF5F5660" }, 
+        { "color": "#FF5F56", "fontWeight": "bold" }, 
+        { "color": "#FF5F5660" }  
+      ]
+    },
+    "(__)(.*?)(__)": {
+      "filterLanguageRegex": "markdown",
+      "decorations": [
+        { "color": "#529BFF60" }, 
+        { "color": "#529BFF", "fontWeight": "bold" }, 
+        { "color": "#529BFF60" }  
+      ]
+    },
+    "(==)(.*?)(==)": {
+      "filterLanguageRegex": "markdown",
+      "decorations": [
+        { "color": "#FF9F1C60" }, 
+        { "color": "#FF9F1C", "fontWeight": "bold" }, 
+        { "color": "#FF9F1C60" }  
+      ]
+    },
+    "(\\+\\+)(.*?)(\\+\\+)": {
+      "filterLanguageRegex": "markdown",
+      "decorations": [
+        { "color": "#28C84060" }, 
+        { "color": "#28C840", "fontWeight": "bold" }, 
+        { "color": "#28C84060" }  
+      ]
+    },
+    "(~~)(.*?)(~~)": {
+      "filterLanguageRegex": "markdown",
+      "decorations": [
+        { "color": "#B872FF60", "textDecoration": "none" }, 
+        { "color": "#B872FF", "fontWeight": "bold", "textDecoration": "none" }, 
+        { "color": "#B872FF60", "textDecoration": "none" }  
+      ]
+    }
+  },
+  "editor.tokenColorCustomizations": {
+    "comments": "#4ad56f" 
+  }
+}
