@@ -9,11 +9,12 @@ public:
         : cap_(size)
         , front_(0)
         , rear_(0)
+        , size_(0)
         {
             pQue_ = new int[cap_];
         }
     ~Queue(){
-        delete pQue_;
+        delete[] pQue_;
         pQue_ = nullptr;
     }
     // 入队
@@ -23,6 +24,7 @@ public:
         }
         pQue_[rear_] = val;
         rear_ = (rear_ + 1) % cap_;
+        size_++;
     }
 
     // 出队
@@ -31,6 +33,7 @@ public:
             throw "queue is empty!";
         }
         front_ = (front_ + 1) % cap_;
+        size_--;
     }
 
     // 队头元素
@@ -46,16 +49,45 @@ public:
         if(front_ == rear_){
             throw "queue is empty!";
         }
-        return pQue_[(rear_-1)%cap_];
+        return pQue_[(rear_-1 + cap_)%cap_];
+    }
+
+    // 判空
+    bool empty() const{
+        return front_ == rear_;
+    }
+
+    // 元素个数
+    int size1() const{
+        return size_;
+    }
+
+    int size2() const{
+        int size = 0;
+        for(int i = front_;i != rear_;i = (i+1) % cap_){
+            size++;
+        }
+        return size;
     }
 private:
-    void expand(int newcap){
-
+    void expand(int size){
+        int* p = new int[size];
+        int j = 0;
+        for(int i = front_;i != rear_;i = (i+1) % cap_){
+            p[j] = pQue_[i];
+            j++;
+        }
+        delete[] pQue_;
+        pQue_ = p;
+        cap_ = size;
+        front_ = 0;
+        rear_ = j;
     }
     int* pQue_;
     int cap_; // 空间容量
     int front_; // 队头
     int rear_; // 队尾
+    int size_; // 元素个数
 };
 
 
@@ -66,8 +98,18 @@ private:
 
 
 int main(){
+    int arr[] = {12,4,56,7,89,31,53,75};
 
-
+    Queue que;
+    for(int v : arr){
+        que.push(v);
+    }
+    cout << que.front() <<endl;
+    cout << que.back() <<endl;
+    while(!que.empty()){
+        cout << que.front() << " " << que.back() << endl;
+        que.pop();
+    }
 
 
 
