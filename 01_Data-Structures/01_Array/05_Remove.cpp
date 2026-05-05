@@ -25,11 +25,9 @@ using namespace std;
 //             }
 //             if(nums[l] == val){
 //                 nums[l] = nums[r-1];
-//                 r--;
-                
+//                 r--;             
 //             }else{
 //                 l++;
-                
 //             }
 //         }
 //         return l;
@@ -41,8 +39,7 @@ using namespace std;
 // public:
 //     int removeElement(vector<int>& nums, int val) {
 //         int left = 0;
-//         int right = nums.size(); // right 指向有效数组的下一个位置（即当前有效长度）
-        
+//         int right = nums.size(); // right 指向有效数组的下一个位置（即当前有效长度）      
 //         while (left < right) {
 //             if (nums[left] == val) {
 //                 // 如果左边遇到了 val，把它和最后一个有效元素交换
