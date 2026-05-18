@@ -1,116 +1,83 @@
-// 环形队列代码实现
 #include <iostream>
 using namespace std;
 
-// queue push pop front back empty size
+
 class Queue{
-public:
-    Queue(int size = 10)
-        : cap_(size)
-        , front_(0)
-        , rear_(0)
-        , size_(0)
-        {
-            pQue_ = new int[cap_];
+private:
+    int* p_;
+    int size_;
+    int capacity_;
+    int first;
+    int rear;
+    void expand(int newcap){
+        int* q_ = new int[newcap];
+        int i = 0;
+        int j = first;
+        for(;j!=rear;++i,j=(j+1)%capacity_){
+            q_[i] = p_[j];
         }
-    ~Queue(){
-        delete[] pQue_;
-        pQue_ = nullptr;
+        delete[] p_;
+        p_ = q_;
+        capacity_ = newcap;
+        first = 0;
+        rear = i;
     }
-    // 入队
+public:
+    Queue(int cap)
+    : size_(0)
+    , capacity_(cap)    
+    , first(0)
+    , rear(0)
+    {
+        p_ = new int[cap];
+    }
+
+    ~Queue(){
+        delete[] p_;
+    }
+
     void push(int val){
-        if((rear_+1) % cap_ == front_){
-            expand(2*cap_);
+        if((first + 1) % capacity_ == rear){
+            expand(2 * capacity_);
         }
-        pQue_[rear_] = val;
-        rear_ = (rear_ + 1) % cap_;
+        p_[rear] = val;
+        rear = (rear+1) % capacity_;
         size_++;
     }
 
-    // 出队
     void pop(){
-        if(front_ == rear_){
-            throw "queue is empty!";
+        if(first == rear){
+            throw std::out_of_range("queue is empty!");
         }
-        front_ = (front_ + 1) % cap_;
+        first = (first+1) % capacity_;
         size_--;
     }
 
-    // 队头元素
     int front() const{
-        if(front_ == rear_){
-            throw "queue is empty!";
+        if(first == rear){
+            throw std::out_of_range("queue is empty!");
         }
-        return pQue_[front_];
+        return p_[first];
     }
 
-    // 队尾元素
     int back() const{
-        if(front_ == rear_){
-            throw "queue is empty!";
+        if(first == rear){
+            throw std::out_of_range("queue is empty!");
         }
-        return pQue_[(rear_-1 + cap_)%cap_];
+        return p_[(rear-1+capacity_) % capacity_];
     }
 
-    // 判空
     bool empty() const{
-        return front_ == rear_;
+        return first == rear;
     }
 
-    // 元素个数
-    int size1() const{
+    int size() const{
         return size_;
     }
-
-    int size2() const{
-        int size = 0;
-        for(int i = front_;i != rear_;i = (i+1) % cap_){
-            size++;
-        }
-        return size;
-    }
-private:
-    void expand(int size){
-        int* p = new int[size];
-        int j = 0;
-        for(int i = front_;i != rear_;i = (i+1) % cap_){
-            p[j] = pQue_[i];
-            j++;
-        }
-        delete[] pQue_;
-        pQue_ = p;
-        cap_ = size;
-        front_ = 0;
-        rear_ = j;
-    }
-    int* pQue_;
-    int cap_; // 空间容量
-    int front_; // 队头
-    int rear_; // 队尾
-    int size_; // 元素个数
 };
 
-
-
-
-
-
-
-
 int main(){
-    int arr[] = {12,4,56,7,89,31,53,75};
-
-    Queue que;
-    for(int v : arr){
-        que.push(v);
-    }
-    cout << que.front() <<endl;
-    cout << que.back() <<endl;
-    while(!que.empty()){
-        cout << que.front() << " " << que.back() << endl;
-        que.pop();
-    }
-
+    
 
 
 
