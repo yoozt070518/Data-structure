@@ -1,4 +1,6 @@
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 using namespace std;
 // 选择排序
 // 效率比冒泡排序高
@@ -10,20 +12,16 @@ using namespace std;
 // 稳定性：不稳定
 
 void ChoiceSort(int arr[], int size){
-    for(int i = 0;i < size-1;++i){// O(n)
-        int min = arr[i];
-        int k = i;
-        for(int j = i+1;j < size;++j){ // O(n)
-            if(arr[j] < min){
-                min = arr[j];
-                k  = j;
+    if(size <= 1) return;
+    for(int i = 0;i<size-1;++i){
+        int min_idx = i;
+        for(int j = i+1;j<size;++j){
+            if(arr[min_idx] > arr[j]){
+                min_idx = j;
             }
         }
-        if(k!=i){
-            int tmp = arr[i];
-            arr[i] = arr[k];
-            arr[k] = tmp;
-
+        if(min_idx != i){
+            swap(arr[i], arr[min_idx]);
         }
     }
 }
@@ -31,5 +29,19 @@ void ChoiceSort(int arr[], int size){
 
 
 int main(){
+     int arr[10];
+    srand(time(0));
+    for(int i = 0;i<10;++i){
+        arr[i] = rand() % 100 + 1;
+    }
+
+    for(int v : arr){
+        cout << v << " ";
+    }
+    cout << endl;
+    ChoiceSort(arr,10);
+    for(int v : arr){
+        cout << v << " ";
+    }
     return 0;
 }

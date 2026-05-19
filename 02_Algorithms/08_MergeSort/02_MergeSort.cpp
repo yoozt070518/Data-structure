@@ -1,46 +1,57 @@
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 using namespace std;
-void Merge(int arr[], int l, int r, int mid){
-    int* p = new int[r-l+1];
+void merge(int arr[],int brr[],  int l, int mid,int r){
     int i = l;
     int j = mid+1;
-    int idx = 0;
-    while(i <= mid && j <= r){
+    int t = 0;
+    while(i<= mid && j<=r){
         if(arr[i] <= arr[j]){
-            p[idx++] = arr[i++];
-        }
-        else{
-            p[idx++] = arr[j++];
+            brr[t++] = arr[i++];
+        }else{
+            brr[t++] = arr[j++];
         }
     }
     while(i <= mid){
-        p[idx++] = arr[i++];
+        brr[t++] = arr[i++];
     }
     while(j <= r){
-        p[idx++] = arr[j++];
+        brr[t++] = arr[j++];
     }
-    for(j = 0,i = l;i <= r;i++,j++){
-        arr[i] = p[j];
+    for(i = 0, j = l;j<=r;++j,++i){
+        arr[j] = brr[i];
     }
-    delete[] p;
 }
-void MergeSort(int arr[] , int begin, int end){
-    if(begin >= end){
-        return;
-    }
-    int mid = (begin + end) / 2;
-    MergeSort(arr, begin, mid);
-    MergeSort(arr, mid+1, end);
-    Merge(arr, begin, end, mid);
+
+void MergeSort(int arr[], int brr[], int l, int r){
+    if(l >= r) return;
+    int mid = l + (r-l)/2;
+    MergeSort(arr, brr, l, mid);
+    MergeSort(arr, brr, mid+1, r);
+    merge(arr, brr, l , mid, r);
 }
 void MergeSort(int arr[], int size){
-    MergeSort(arr, 0, size-1);
+    if(size<=1) return;
+    int* p = new int[size];
+    MergeSort(arr, p, 0, size-1);
+    delete[] p;
 }
 
-
-
-
-
 int main(){
+    int arr[10];
+    srand(time(0));
+    for(int i = 0;i<10;++i){
+        arr[i] = rand() % 100 + 1;
+    }
+
+    for(int v : arr){
+        cout << v << " ";
+    }
+    cout << endl;
+    MergeSort(arr,10);
+    for(int v : arr){
+        cout << v << " ";
+    }
     return 0;
 }

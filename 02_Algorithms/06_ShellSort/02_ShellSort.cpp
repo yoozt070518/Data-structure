@@ -3,17 +3,17 @@
 using namespace std;
 
 void ShellSort(int arr[], int size){
-    for(int gap = size / 2;gap >0;gap/=2){
-        for(int i = gap;i < size;i++){
+    for(int gap = size/2;gap>0;gap /= 2){
+        for(int i = gap;i < size;++i){
             int val = arr[i];
-            int j = i-gap;
-            for( ; j >= 0; j-=gap){
-                if(arr[j] <= val){
-                    break;
-                }
-                arr[j + gap] = arr[j];
+            int j = i;
+            while(j > 0 && arr[j-gap] > val){
+                arr[j] = arr[j-gap];
+                j -= gap;
             }
-            arr[j+gap] = val;
+            if(j != i){
+                arr[j] = val;
+            }
         }
     }
 }

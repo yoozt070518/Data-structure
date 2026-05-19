@@ -3,24 +3,22 @@
 #include <ctime>
 using namespace std;
 
-void BubbleSort(int arr[], int size){
-    for(int i = 0;i<size-1;++i){
-        bool flag = false;
-        
-        for(int j = 0;j < size-1-i;++j){
+void BubbleSort(int arr[] , int size){
+    if(size==0 || size==1) return;
+    int lastswapidx = size-1;
+    while(lastswapidx > 0){
+        int curlastswapidx = 0;
+        bool isSorted = true;
+        for(int j = 0;j<lastswapidx;++j){
             if(arr[j] > arr[j+1]){
-                int temp = arr[j];
-                arr[j] = arr[j+1];
-                arr[j+1] = temp;
-                flag = true;
+                swap(arr[j], arr[j+1]);
+                curlastswapidx = j;
+                isSorted = false;
             }
         }
-// 一趟的处理中 如果没有做任何的数据交换 那么说明数据已经有序了
-        if(!flag){
-            return;
-        }
+        if(isSorted) break;
+        lastswapidx = curlastswapidx;
     }
-    
 }
 
 int main(){
