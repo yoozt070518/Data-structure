@@ -1,150 +1,87 @@
-// 线性探测哈希桶简单实现(取模法)
 #include <iostream>
+#include <string>
+#include <cstring>
 using namespace std;
 
-// 桶的状态
-enum State{
-    STATE_UNUSE,
-    STATE_USING,
-    STATE_DEL
-};
+const int SIZE = 20;
 
-// 哈希桶
-struct Bucket{
-    Bucket(int key = 0, State state = STATE_UNUSE)
-        : key_(key)
-        , state_(state)
-        {}
-    int key_;
-    State state_;
-};
+void set(int* bitmap, int n) {
+    int idx = n / 32;
+    int bit = n % 32;
+    bitmap[idx] |= (1 << bit);
+}
 
-// 创建哈希表
-class HashTable{
-public:
-    // 构造函数(可传入大小与负载因子)
-    HashTable(int size = Prime_Table[0], double loadFactor = 0.75)
-        :useTableNum_(0)   
-        ,loadFactor_(loadFactor)
-        ,PrimeIdx_(0)
-    {
-        // 如果用户传入的值不符合素数表的值 对这个size调整至最近的比较大的素数值
-        if(size != Prime_Table[0]){
-            for(;PrimeIdx_ < PRIME_SIZE;++PrimeIdx_){
-                if(Prime_Table[PrimeIdx_] >= size){
-                    break;
-                }
-            }
-            // 如果用户传入的值过大 使用最大的素数值
-            if(PrimeIdx_ == PRIME_SIZE){
-                PrimeIdx_--;
-            }
-        } 
-        // 在函数内部创建大小与堆内存
-        table_size = Prime_Table[PrimeIdx_];
-        table_ = new Bucket[table_size];
-    }
+bool get(int* bitmap, int n) {
+    int idx = n / 32;
+    int bit = n % 32;
+    return bitmap[idx] & (1 << bit);
+}
 
-    // 析构函数
-    ~HashTable(){
-        delete[] table_;
-        table_ = nullptr;
-    }
+int hash1(const string& s) {
+    int h = 0;
+    for (const auto& c : s)
+        h = h * 31 + c;
+    return abs(h) % SIZE;
+}
 
-    // 插入
-    bool insert(int key){
-        double factor = useTableNum_*1.0 / table_size;
-        cout << "factor: "<< factor << endl;
-        if(factor >= loadFactor_){
-            expand();
-        }
-        int idx = (key % table_size + table_size) % table_size;
-        int i = idx;
-        do{
-            if(table_[i].state_ != STATE_USING){
-                table_[i].state_ = STATE_USING;
-                table_[i].key_ = key;
-                useTableNum_++;
-                return true;
-            }
-            i = (i+1) % table_size;
-        }while(table_[i].state_!=STATE_UNUSE && i != idx);
-        return false;
-    }
+int hash2(const string& s) {
+    int h = 0;
+    for (const auto& c : s)
+        h = h * 37 + c;
+    return abs(h) % SIZE;
+}
 
-    // 删除所有值为key的哈希桶
-    void erase(int key){
-        int idx = (key % table_size + table_size) % table_size;
-        int i = idx;
-        do{
-            if(table_[i].state_ == STATE_USING && table_[i].key_ == key){
-                table_[i].state_ = STATE_DEL;
-                useTableNum_--;
-            }
-            i = (i+1) % table_size;
-        }while(table_[i].state_!=STATE_UNUSE && i != idx);
-    }
+int hash3(const string& s) {
+    int h = 0;
+    for (const auto& c : s)
+        h = h * 41 + c;
+    return abs(h) % SIZE;
+}
 
-    // 查询
-    bool find(int key){
-        int idx = (key % table_size + table_size) % table_size;
-        int i = idx;
-        do{
-            if(table_[i].state_ == STATE_USING && table_[i].key_ == key){
-                return true;
-            }
-            i = (i+1) % table_size;
-        }while(table_[i].state_!=STATE_UNUSE && i != idx);
-        return false;
-    }
+void insert(int* bitmap, const string& s) {
+    set(bitmap, hash1(s));
+    set(bitmap, hash2(s));
+    set(bitmap, hash3(s));
+}
 
-private:
-    // 扩容操作
-    void expand(){
-        ++PrimeIdx_;
-        if(PrimeIdx_ == PRIME_SIZE){
-            throw "HashTable is too large, can not expand anymore!";
-        }
-        int new_size = Prime_Table[PrimeIdx_];
-        Bucket* newTable = new Bucket[new_size];
-        for(int i = 0;i<table_size;++i){
-            if(table_[i].state_ == STATE_USING){
-                int idx = (table_[i].key_ % new_size + new_size) % new_size;
-                int k = idx;
-                do{
-                    if(newTable[k].state_ != STATE_USING){
-                        newTable[k].state_ = STATE_USING;
-                        newTable[k].key_ = table_[i].key_;
-                        break;
-                    }
-                }while(k != idx);
-            }
-        }
-        delete[] table_;
-        table_ = newTable;
-        table_size = Prime_Table[PrimeIdx_];
-    }
-    Bucket* table_;
-    int table_size;
-    int useTableNum_;
-    double loadFactor_;
-    static const int PRIME_SIZE = 10;
-    static int Prime_Table[PRIME_SIZE];
-    int PrimeIdx_;
-};
-int HashTable::Prime_Table[PRIME_SIZE] = {3, 7, 23, 47, 97, 251, 443, 911, 1471, 42773};
+bool contains(int* bitmap, const string& s) {
+    return get(bitmap, hash1(s)) &&
+           get(bitmap, hash2(s)) &&
+           get(bitmap, hash3(s));
+}
+
+int main() {
+    int bitmap[SIZE / 32 + 1];
+    memset(bitmap, 0, sizeof(bitmap));
+    insert(bitmap, "a");
+    insert(bitmap, "b");
+    insert(bitmap, "c");
+    insert(bitmap, "d");
+    insert(bitmap, "e");
+    insert(bitmap, "f");
+    insert(bitmap, "g");
+    insert(bitmap, "h");
+    insert(bitmap, "i");
+    insert(bitmap, "j");
+    insert(bitmap, "apple");
+    insert(bitmap, "banana");
+    insert(bitmap, "cherry");
+
+    cout << contains(bitmap, "apple")  << "\n";  // 1
+    cout << contains(bitmap, "banana") << "\n";  // 1
+    cout << contains(bitmap, "grape")  << "\n";  // 0（大概率）
+    cout << contains(bitmap, "xyz") << "\n";
+cout << contains(bitmap, "hello") << "\n";
+cout << contains(bitmap, "world") << "\n";
+    cout << contains(bitmap, "acb") << "\n";
+cout << contains(bitmap, "kdkdj") << "\n";
+cout << contains(bitmap, "adad") << "\n";
+    cout << contains(bitmap, "hole") << "\n";
+cout << contains(bitmap, "mylist") << "\n";
+cout << contains(bitmap, "mysql") << "\n";
+cout << contains(bitmap, "fahhf") << "\n";
+cout << contains(bitmap, "fafa") << "\n";
+cout << contains(bitmap, "fafnds") << "\n";
 
 
- int main(){
-    HashTable htable;
-    htable.insert(21);
-    htable.insert(32);
-    htable.insert(14);
-    htable.insert(15);
-    htable.insert(21);
-
-
-
-
-    return 0;
- }
+}
