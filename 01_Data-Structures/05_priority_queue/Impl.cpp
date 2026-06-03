@@ -31,7 +31,7 @@ public:
         int n = v.size();
         while(left(i) < n){
             int child = left(i);
-            if(right(i) < n && comp(v[left(i)], v[right(i))]){
+            if(right(i) < n && comp(v[left(i)], v[right(i)])){
                 child++;
             }
             if(!comp(val ,v[child])){

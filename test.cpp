@@ -1,87 +1,78 @@
 #include <iostream>
-#include <string>
-#include <cstring>
+#include <vector>
+#include <stdlib.h>
+#include <time.h>
+#include <queue>
+#include <stack>
+#include <functional>
 using namespace std;
 
-const int SIZE = 20;
+struct TreeNode{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x)
+        : val(x)
+        , left(nullptr)
+        , right(nullptr)
+    {}
+};
 
-void set(int* bitmap, int n) {
-    int idx = n / 32;
-    int bit = n % 32;
-    bitmap[idx] |= (1 << bit);
+void preorder(TreeNode* root){
+    if(!root){
+        return;
+    }
+    cout << root->val << " ";
+    preorder(root->left);
+    preorder(root->right);
 }
 
-bool get(int* bitmap, int n) {
-    int idx = n / 32;
-    int bit = n % 32;
-    return bitmap[idx] & (1 << bit);
+void inorder(TreeNode* root){
+    if(!root){
+        return;
+    }
+    inorder(root->left);
+    cout << root->val << " ";
+    inorder(root->right);
 }
 
-int hash1(const string& s) {
-    int h = 0;
-    for (const auto& c : s)
-        h = h * 31 + c;
-    return abs(h) % SIZE;
+void postorder(TreeNode* root){
+    if(!root){
+        return;
+    }
+    postorder(root->left);
+    postorder(root->right);
+    cout << root->val << " ";
 }
 
-int hash2(const string& s) {
-    int h = 0;
-    for (const auto& c : s)
-        h = h * 37 + c;
-    return abs(h) % SIZE;
+TreeNode* search(TreeNode* root, int target){
+    if(!root) return nullptr;
+    if(root->val == target) return root;
+    if(target < root->val)
+        return search(root->right, target);
+    else
+        return search(root->right,target);
 }
 
-int hash3(const string& s) {
-    int h = 0;
-    for (const auto& c : s)
-        h = h * 41 + c;
-    return abs(h) % SIZE;
+TreeNode* insert(TreeNode* root, int val){
+    if(!root) return new TreeNode(val);
+
+    if(val < root->val)
+        root->left = insert(root->left, val);
+    else
+        root->right = insert(root->right, val);
+    
+    return root;
 }
 
-void insert(int* bitmap, const string& s) {
-    set(bitmap, hash1(s));
-    set(bitmap, hash2(s));
-    set(bitmap, hash3(s));
-}
 
-bool contains(int* bitmap, const string& s) {
-    return get(bitmap, hash1(s)) &&
-           get(bitmap, hash2(s)) &&
-           get(bitmap, hash3(s));
-}
+int main(){
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
 
-int main() {
-    int bitmap[SIZE / 32 + 1];
-    memset(bitmap, 0, sizeof(bitmap));
-    insert(bitmap, "a");
-    insert(bitmap, "b");
-    insert(bitmap, "c");
-    insert(bitmap, "d");
-    insert(bitmap, "e");
-    insert(bitmap, "f");
-    insert(bitmap, "g");
-    insert(bitmap, "h");
-    insert(bitmap, "i");
-    insert(bitmap, "j");
-    insert(bitmap, "apple");
-    insert(bitmap, "banana");
-    insert(bitmap, "cherry");
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
 
-    cout << contains(bitmap, "apple")  << "\n";  // 1
-    cout << contains(bitmap, "banana") << "\n";  // 1
-    cout << contains(bitmap, "grape")  << "\n";  // 0（大概率）
-    cout << contains(bitmap, "xyz") << "\n";
-cout << contains(bitmap, "hello") << "\n";
-cout << contains(bitmap, "world") << "\n";
-    cout << contains(bitmap, "acb") << "\n";
-cout << contains(bitmap, "kdkdj") << "\n";
-cout << contains(bitmap, "adad") << "\n";
-    cout << contains(bitmap, "hole") << "\n";
-cout << contains(bitmap, "mylist") << "\n";
-cout << contains(bitmap, "mysql") << "\n";
-cout << contains(bitmap, "fahhf") << "\n";
-cout << contains(bitmap, "fafa") << "\n";
-cout << contains(bitmap, "fafnds") << "\n";
-
-
+    root->right->left = new TreeNode(6);
 }
