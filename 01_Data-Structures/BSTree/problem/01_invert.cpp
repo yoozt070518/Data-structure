@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stack>
 #include <queue>
+#include <algorithm>
 using namespace std;
 
 template<typename T>
@@ -11,127 +12,6 @@ struct TreeNode
     TreeNode<T>* right;
     
     TreeNode(const T& val): data(val), left(nullptr), right(nullptr){}
-};
-
-template <typename T>
-class BinaryTree{
-private:
-    TreeNode<T>* root_;
-    void clear(TreeNode<T>* node){
-        if(node == nullptr){
-            return;
-        }
-        if(node->left != nullptr) clear(node->left);
-        if(node->right != nullptr) clear(node->right);
-        delete node;
-    }
-
-    void preOrder1(TreeNode<T>* node){
-        if(node == nullptr) return;
-        cout << node->data << " ";
-        if(node->left != nullptr) preOrder1(node->left);
-        if(node->right != nullptr) preOrder1(node->right);
-    }
-
-    void inOrder1(TreeNode<T>* node){
-        if(node == nullptr) return;
-        if(node->left != nullptr) inOrder1(node->left);
-        cout << node->data << " ";
-        if(node->right != nullptr) inOrder1(node->right);
-    }
-
-    void postOrder1(TreeNode<T>* node){
-        if(node == nullptr) return;
-        if(node->left != nullptr) postOrder1(node->left);
-        
-        if(node->right != nullptr) postOrder1(node->right);
-        cout << node->data << " ";
-    }
-public:
-    BinaryTree(): root_(nullptr){}
-    ~BinaryTree(){
-        clear(root_);
-    }
-
-    void preOrder1(){
-        preOrder1(root_);
-    }
-
-    void inOrder1(){
-        inOrder1(root_);
-    }
-
-    void postOrder1(){
-        postOrder1(root_);
-    }
-
-    void preOrder2(){
-        if(root_ == nullptr) return;
-        stack<TreeNode<T>*> myStack;
-        myStack.push(root_);
-        while(!myStack.empty()){
-            TreeNode<T>* node = myStack.top();
-            cout << node->data << " ";
-            myStack.pop();
-            if(node->right != nullptr){
-                myStack.push(node->right);
-            }
-            if(node->left != nullptr){
-                myStack.push(node->left);
-            }
-        }
-    }
-
-
-    void inOrder2(){
-        if(root_ == nullptr) return;
-        stack<TreeNode<T>*> myStack;
-        TreeNode<T>* curr = root_;
-        while(curr != nullptr || !myStack.empty()){
-            if(curr != nullptr){
-                myStack.push(curr);
-                curr = curr->left;
-            }else{
-                TreeNode<T>* node = myStack.top();
-                myStack.pop();
-                cout << node->data << " ";
-                curr = node->right;
-            }
-        }
-    }
-
-    void postOrder2(){
-        if(root_ == nullptr)return;
-        stack<TreeNode<T>*> myStack1;
-        stack<TreeNode<T>*> myStack2;
-
-        myStack1.push(root_);
-        while(!myStack1.empty()){
-            TreeNode<T>* curr = myStack1.top();
-            myStack2.push(curr);
-            myStack1.pop();
-            
-            if(curr->left != nullptr) myStack1.push(curr->left);
-            if(curr->right != nullptr) myStack1.push(curr->right);
-        }
-        while(!myStack2.empty()){
-            cout << myStack2.top()->data << " ";
-            myStack2.pop();
-        }
-    }
-
-    void levelOrder(){
-        if(root_ == nullptr) return;
-        queue<TreeNode<T>*> myQueue;
-        myQueue.push(root_);
-        while(!myQueue.empty()){
-            TreeNode<T>* curr = myQueue.front();
-            cout << curr->data << " ";
-            myQueue.pop();
-            if(curr->left != nullptr) myQueue.push(curr->left);
-            if(curr->right != nullptr) myQueue.push(curr->right);
-        }
-    }
 };
 
 template<typename T>
@@ -197,7 +77,7 @@ private:
         if(root == nullptr) return false;
         TreeNode<T>* curr = root;
         while(curr != nullptr){
-            if(val == curr->data) return ture;
+            if(val == curr->data) return true;
             else if(val < curr->data) curr = curr->left;
             else curr = curr->right;
         }
@@ -268,11 +148,18 @@ private:
         
        
         delete curr;
-
     }
 
+    void invert1(TreeNode<T>* node){
+        if(node == nullptr) return;
+        invert1(node->left);
+        invert1(node->right);
+        swap(node->left, node->right);
+    }
+
+
 public:
-    BSTree(): root_(nullptr){}
+    BSTree(TreeNode<T>* root = nullptr): root_(root){}
     ~BSTree(){
         clear(root_);
     }
@@ -300,8 +187,110 @@ public:
     void remove2(const T& val){
         remove2(root_, val);
     }
+
+    void invert1(){
+        invert1(root_);
+    }
+    void preOrder2(){
+        if(root_ == nullptr) return;
+        stack<TreeNode<T>*> myStack;
+        myStack.push(root_);
+        while(!myStack.empty()){
+            TreeNode<T>* node = myStack.top();
+            cout << node->data << " ";
+            myStack.pop();
+            if(node->right != nullptr){
+                myStack.push(node->right);
+            }
+            if(node->left != nullptr){
+                myStack.push(node->left);
+            }
+        }
+    }
+
+
+    void inOrder2(){
+        if(root_ == nullptr) return;
+        stack<TreeNode<T>*> myStack;
+        TreeNode<T>* curr = root_;
+        while(curr != nullptr || !myStack.empty()){
+            if(curr != nullptr){
+                myStack.push(curr);
+                curr = curr->left;
+            }else{
+                TreeNode<T>* node = myStack.top();
+                myStack.pop();
+                cout << node->data << " ";
+                curr = node->right;
+            }
+        }
+    }
+
+    void postOrder2(){
+        if(root_ == nullptr)return;
+        stack<TreeNode<T>*> myStack1;
+        stack<TreeNode<T>*> myStack2;
+
+        myStack1.push(root_);
+        while(!myStack1.empty()){
+            TreeNode<T>* curr = myStack1.top();
+            myStack2.push(curr);
+            myStack1.pop();
+            
+            if(curr->left != nullptr) myStack1.push(curr->left);
+            if(curr->right != nullptr) myStack1.push(curr->right);
+        }
+        while(!myStack2.empty()){
+            cout << myStack2.top()->data << " ";
+            myStack2.pop();
+        }
+    }
+    
+    void levelOrder(){
+        if(root_ == nullptr) return;
+        queue<TreeNode<T>*> myQueue;
+        myQueue.push(root_);
+        while(!myQueue.empty()){
+            TreeNode<T>* curr = myQueue.front();
+            cout << curr->data << " ";
+            myQueue.pop();
+            if(curr->left != nullptr) myQueue.push(curr->left);
+            if(curr->right != nullptr) myQueue.push(curr->right);
+        }
+    }
+
+    void invert2(){
+        if(root_ == nullptr) return;
+        queue<TreeNode<T>*> myQueue;
+        myQueue.push(root_);
+        while(!myQueue.empty()){
+            TreeNode<T>* curr = myQueue.front();
+            swap(curr->left, curr->right);
+            myQueue.pop();
+            if(curr->left != nullptr) myQueue.push(curr->left);
+            if(curr->right != nullptr) myQueue.push(curr->right);
+        }
+    }
 };
 
 int main(){
+    BSTree<int> tree;
+    // 故意打乱顺序插入，让它长成一棵饱满的树
+    tree.insert1(5);
+    tree.insert1(3);
+    tree.insert1(7);
+    tree.insert1(2);
+    tree.insert1(4);
+    tree.insert1(6);
+    tree.insert1(8);
+
+    cout << "正常饱满树层序: ";
+    tree.levelOrder(); // 💡 输出: 5 3 7 2 4 6 8
+
+    tree.invert2();
+
+    cout << "翻转饱满树层序: ";
+    tree.levelOrder(); // 💡 瞬间变样！输出: 5 7 3 8 6 4 2
+    
     return 0;
 }

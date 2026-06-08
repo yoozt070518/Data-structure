@@ -15,7 +15,7 @@ struct TreeNode
 template <typename T>
 void inOrder(TreeNode<T>* root){
     stack<TreeNode<T>*> myStack;
-    TreeNode<T>* curr = node;
+    TreeNode<T>* curr = root;
     while(curr != nullptr || !myStack.empty()){
         if(curr->left != nullptr){
             myStack.push(curr->left);
