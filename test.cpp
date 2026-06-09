@@ -197,7 +197,7 @@ private:
         if(root == nullptr) return false;
         TreeNode<T>* curr = root;
         while(curr != nullptr){
-            if(val == curr->data) return ture;
+            if(val == curr->data) return true;
             else if(val < curr->data) curr = curr->left;
             else curr = curr->right;
         }
