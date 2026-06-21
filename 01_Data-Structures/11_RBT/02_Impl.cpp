@@ -1,6 +1,6 @@
 #include <iostream>
-#include <string>
 #include <vector>
+#include <string>
 using namespace std;
 
 enum Color{ RED, BLACK };
@@ -8,10 +8,10 @@ enum Color{ RED, BLACK };
 struct Node{
     int key;
     Color color;
-    Node *left, *right, *parent;
+    Node* left, *right, *parent;
 };
 
-Node nil_node = { 0, BLACK, nullptr, nullptr, nullptr};
+Node nil_node = { 0 , BLACK, nullptr, nullptr, nullptr };
 Node* NIL = &nil_node;
 
 void transplant(Node*& root, Node* u, Node* v){
@@ -32,14 +32,14 @@ void rotateRight(Node*& root, Node* z){
 
 void rotateLeft(Node*& root, Node* z){
     Node* y = z->right;
-    z->right = y->left;
+    z->right  = y->left;
     if(y->left != NIL) y->left->parent = z;
     transplant(root, z, y);
     y->left = z;
     z->parent = y;
 }
 
-Node* mimimum(Node* x){
+Node* minimum(Node* x){
     while(x->left != NIL){
         x = x->left;
     }
@@ -54,10 +54,11 @@ void deleteFixup(Node*& root, Node* x){
                 w->color = BLACK;
                 x->parent->color = RED;
                 rotateLeft(root, x->parent);
+                w = x->parent->right;
             }
             if(w->left->color == BLACK && w->right->color == BLACK){
                 w->color = RED;
-                x=x->parent;
+                x = x->parent;
             }else{
                 if(w->right->color == BLACK){
                     w->left->color = BLACK;
@@ -69,28 +70,29 @@ void deleteFixup(Node*& root, Node* x){
                 x->parent->color = BLACK;
                 w->right->color = BLACK;
                 rotateLeft(root, x->parent);
+                x = root;
             }
         }else{
-           Node* w = x->parent->left;
+            Node* w = x->parent->left;
             if(w->color == RED){
-                w->color = BLACK;
                 x->parent->color = RED;
+                w->color = BLACK;
                 rotateRight(root, x->parent);
                 w = x->parent->left;
             }
-            if(w->right->color == BLACK && w->left->color == BLACK){
+            if(w->left->color == BLACK && w->right->color == BLACK){
                 w->color = RED;
                 x = x->parent;
             }else{
                 if(w->left->color == BLACK){
+                    w->color  = RED;
                     w->right->color = BLACK;
-                    w->color = RED;
                     rotateLeft(root, w);
                     w = x->parent->left;
                 }
                 w->color = x->parent->color;
-                x->parent->color = BLACK;
                 w->left->color = BLACK;
+                x->parent->color = BLACK;
                 rotateRight(root, x->parent);
                 x = root;
             }
@@ -98,6 +100,10 @@ void deleteFixup(Node*& root, Node* x){
     }
     x->color = BLACK;
 }
+
+
+
+
 
 void deleteNode(Node*& root, int key){
     Node* z = root;
@@ -117,30 +123,60 @@ void deleteNode(Node*& root, int key){
         x = z->left;
         transplant(root, z, z->left);
     }else{
-        y = mimimum(z->right);
+        y = minimum(z->right);
         yOringinalColor = y->color;
         x = y->right;
-        if(y->parent == z){
+        if(z == y->parent){
             x->parent = y;
         }else{
-            transplant(root, y,y->right);
+            transplant(root, y, y->right);
             y->right = z->right;
-            z->right->parent = y;
+            y->right->parent = y;
         }
         transplant(root, z, y);
         y->left = z->left;
-        z->left->parent = y;
+        y->left->parent = y;
         y->color = z->color;
     }
 
     if(yOringinalColor == BLACK) deleteFixup(root, x);
 }
 
+int checkRBT(Node* node, Node*& prev){
+    if(node == NIL) return 1;
 
+    if(node->color == RED){
+        if(node->left->color == RED || node->right->color == RED){
+            return -1;
+        }
+    }
 
+    int lh = checkRBT(node->left, prev);
+    if(lh == -1) return -1;
 
+    if(prev != NIL && prev->key >= node->key){
+        return -1;
+    }
+    prev = node;
 
+    int rh = checkRBT(node->right, prev);
+    if(rh == -1) return -1;
+    if(lh != rh){
+        return -1;
+    }
+    return (node->color == RED) ? lh : lh+1;
+}
 
+bool isRBT(Node* root){
+    if(root == NIL) return true;
+    if(root->color == RED) return false;
+    Node* prev = NIL;
+    if(checkRBT(root, prev) == -1){
+        return false;
+    }else{
+        return true;
+    }
+}
 int main(){
     return 0;
 }
