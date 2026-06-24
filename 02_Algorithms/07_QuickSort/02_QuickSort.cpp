@@ -3,6 +3,8 @@
 #include <cstdlib>
 using namespace std;
 
+// O(n)
+// 有序->选择排序
 int partition(int arr[], int l ,int r){
     int val = arr[l];
     while(l < r){
