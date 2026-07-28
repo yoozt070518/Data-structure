@@ -1,0 +1,4 @@
+interface:
+  display_name: "系统课程导师"
+  short_description: "在当前Vault中开展、保存并复用完整系统课程与教学反馈"
+  default_prompt: "使用 $teach-me-systematically 带我系统学习一个新的教学章节。"

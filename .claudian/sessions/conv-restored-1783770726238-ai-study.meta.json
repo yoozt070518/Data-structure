@@ -1,0 +1,25 @@
+{
+  "id": "conv-restored-1783770726238-ai-study",
+  "providerId": "codex",
+  "title": "整理笔记与 AI 学习系统讨论（已恢复）",
+  "createdAt": 1783770726238,
+  "updatedAt": 1783791724289,
+  "lastResponseAt": 1783791622411,
+  "sessionId": "019f5105-2bc5-7533-91c6-be5251197c93",
+  "selectedModel": "gpt-5.6-sol",
+  "providerState": {
+    "threadId": "019f5105-2bc5-7533-91c6-be5251197c93",
+    "sessionFilePath": "C:\\Users\\46838\\.codex\\sessions\\2026\\07\\11\\rollout-2026-07-11T19-52-06-019f5105-2bc5-7533-91c6-be5251197c93.jsonl",
+    "transcriptRootPath": "C:\\Users\\46838\\.codex\\sessions"
+  },
+  "usage": {
+    "inputTokens": 198373,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 197376,
+    "contextWindow": 353400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 198373,
+    "percentage": 56,
+    "model": "gpt-5.6-sol"
+  }
+}

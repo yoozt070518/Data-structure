@@ -1,0 +1,7 @@
+{
+  "userIgnoreFilters": [
+    "**/output/**",
+    "**/*.exe"
+  ],
+  "showUnsupportedFiles": true
+}

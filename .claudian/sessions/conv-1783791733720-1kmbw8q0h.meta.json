@@ -1,0 +1,26 @@
+{
+  "id": "conv-1783791733720-1kmbw8q0h",
+  "providerId": "codex",
+  "title": "带我学一下图论吧",
+  "titleGenerationStatus": "failed",
+  "createdAt": 1783791733720,
+  "updatedAt": 1784035397955,
+  "lastResponseAt": 1783791907684,
+  "sessionId": "019f5245-d18a-7b92-b58f-c28cb67037ae",
+  "selectedModel": "gpt-5.6-sol",
+  "providerState": {
+    "threadId": "019f5245-d18a-7b92-b58f-c28cb67037ae",
+    "sessionFilePath": "C:\\Users\\46838\\.codex\\sessions\\2026\\07\\12\\rollout-2026-07-12T01-42-20-019f5245-d18a-7b92-b58f-c28cb67037ae.jsonl",
+    "transcriptRootPath": "C:\\Users\\46838\\.codex\\sessions"
+  },
+  "usage": {
+    "inputTokens": 16083,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 14080,
+    "contextWindow": 353400,
+    "contextWindowIsAuthoritative": true,
+    "contextTokens": 16083,
+    "percentage": 5,
+    "model": "gpt-5.6-sol"
+  }
+}
